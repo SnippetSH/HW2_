@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define INT_MAX 9876543210
+#define INT_MAX 987654321
 #define nullptr NULL
 
 typedef struct Tree* tree;
