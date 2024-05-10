@@ -42,7 +42,7 @@ public class SCV extends Unit {
     }
     public void build(GameStatus gameStatus, Scanner sc) {
         while(true) {
-            System.out.println("Choose which building to construct. (0 to cancel)");
+            System.out.println("Choose which building to construct. (0 to cancel):");
             for (int i = 0; i < 4; i++) {
                 System.out.printf("(%d) %s\n", i + 1, this.buildings[i]);
             }

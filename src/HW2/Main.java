@@ -105,7 +105,7 @@ public class Main {
                     BuildingSelection(sc, gameStatus);
                     break;
                 case 3:
-                    System.out.println("Bye.");
+                    System.out.println("Bye");
                     exit = true;
                     break;
                 default:
