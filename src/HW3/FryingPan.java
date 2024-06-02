@@ -5,7 +5,8 @@ import java.util.Scanner;
 public class FryingPan extends CookingTool{
     private int intensity;
 
-    FryingPan() {
+    FryingPan(int intensity) {
+        this.intensity = intensity;
         name = "FryingPan";
     }
     @Override
@@ -17,7 +18,7 @@ public class FryingPan extends CookingTool{
     public void setup(Scanner sc) {
         int it = sc.nextInt();
         if(it < 1 || it > 3) {
-            System.out.println("An Error Occurred");
+            System.out.println("An Error Occurred: Invalid input.");
             return;
         }
         intensity = it;
@@ -26,5 +27,9 @@ public class FryingPan extends CookingTool{
     @Override
     public int getValue() {
         return intensity;
+    }
+
+    public String toString() {
+        return name;
     }
 }

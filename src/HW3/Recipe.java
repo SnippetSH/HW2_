@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Recipe {
-    String dishName;
+    private String dishName;
     CookingTool cookingTool;
     ArrayList<Ingredient> ingredient;
+
+    public String getDishName() {
+        return dishName;
+    }
+
+
 
     public Recipe(String dishName, CookingTool cookingTool, ArrayList<Ingredient> ingredient) {
         this.dishName = dishName;
@@ -17,8 +23,14 @@ public class Recipe {
     public String stringify() {
         StringBuilder s = new StringBuilder();
         s.append(cookingTool.getName());
+
+        int cnt = ingredient.size();
         for(Ingredient it : ingredient) {
-            s.append(it.getter()).append(",");
+            s.append(it.getter());
+            if(cnt != 1) {
+                s.append(',');
+            }
+            cnt--;
         }
         s.append("|").append(dishName);
 
@@ -35,18 +47,39 @@ public class Recipe {
         String toolInt = par[1];
         String[] ingredients = par[2].split(",");
         String dish = par[3];
+        int cookingToolValue;
+
+        try {
+            cookingToolValue = Integer.parseInt(toolInt);
+            if(!dish.matches("^[a-zA-Z]*$")) {
+                throw new InvalidRecipeFileException("An Error Occurred: Invalid Dish name.");
+            }
+            if(Objects.equals(tool, "Oven")) {
+                if(cookingToolValue != 100 && cookingToolValue != 150 && cookingToolValue != 200 && cookingToolValue != 250) {
+                    throw new InvalidRecipeFileException("An Error Occurred: Invalid Oven Temperature.");
+                }
+            } else if(Objects.equals(tool, "FryingPan") || Objects.equals(tool, "Pot")) {
+                if(cookingToolValue > 3 || cookingToolValue < 1) {
+                    throw new InvalidRecipeFileException("An Error Occurred: Invalid " + tool + " Intensity");
+                }
+            } else {
+                throw new InvalidRecipeFileException("An Error Occurred: Invalid Cooking Tool.");
+            }
+        } catch (NumberFormatException e) {
+            throw new InvalidRecipeFileException("An Error Occurred: Integer cannot be parseable");
+        }
 
         CookingTool Tool = switch (tool) {
-            case "FryingPan" -> new FryingPan();
-            case "Pot" -> new Pot();
-            case "Oven" -> new Oven();
-            default -> throw new InvalidRecipeFileException("An Error Occurred: Invalid Cooking Tool Name.\n");
+            case "FryingPan" -> new FryingPan(cookingToolValue);
+            case "Pot" -> new Pot(cookingToolValue);
+            case "Oven" -> new Oven(cookingToolValue);
+            default -> throw new InvalidRecipeFileException("An Error Occurred: Invalid Cooking Tool Name.");
         };
 
         ArrayList<Ingredient> ingredients1 = new ArrayList<>();
         for(String it : ingredients) {
             if(!it.matches("^[a-zA-Z]*$")) {
-                throw new InvalidRecipeFileException("An Error Occurred: Invalid Ingredient name.\n");
+                throw new InvalidRecipeFileException("An Error Occurred: Invalid Ingredient name.");
             }
             ingredients1.add(new Ingredient(it));
         }
